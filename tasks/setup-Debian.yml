@@ -27,9 +27,11 @@
     WAZUH_PROTOCOL: "{{ wazuh_manager_protocol }}"
     WAZUH_REGISTRATION_PASSWORD: "{{ wazuh_registration_password }}"
     WAZUH_AGENT_GROUP: "{{ wazuh_agent_group }}"
+  when: not ansible_check_mode
 
 - name: "Start wazuh-agent"
   service:
     name: wazuh-agent
     state: started
     enabled: true
+  when: not ansible_check_mode

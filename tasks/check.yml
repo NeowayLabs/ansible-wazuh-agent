@@ -1,11 +1,7 @@
 ---
-- name: Include roles' meta data
-  include_vars:
-    file: "{{ role_path }}/meta/main.yml"
-
 - name: Test the distribution is supported. End the host if not.
   set_fact:
-    supported_distributions: "{{ galaxy_info.platforms|json_query('[].name') }}"
+    supported_distributions: "{{ requirements.platforms|json_query('[].name') }}"
 - block:
     - name: Ending play...
       debug:
@@ -16,7 +12,7 @@
 
 - name: Test the release is supported. End the host if not.
   set_fact:
-    supported_releases: "{{ (galaxy_info.platforms| selectattr('name', 'match', ansible_distribution)| list|first).versions }}"
+    supported_releases: "{{ (requirements.platforms| selectattr('name', 'match', ansible_distribution)| list|first).versions }}"
 - block:
     - name: Ending play...
       debug:

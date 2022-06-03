@@ -6,3 +6,26 @@ wazuh_registration_port: "1515"
 wazuh_manager_protocol: "tcp"
 wazuh_agent_group: "server-linux"
 wazuh_registration_password: ""
+
+requirements:
+  platforms:
+    - name: "Ubuntu"
+      versions:
+        - "focal"
+        - "bionic"
+        - "impish"
+        - "jammy"
+        - "kinetic"
+    - name: "Debian"
+      versions:
+        - "bullseye"
+        - "buster"
+    - name: "RedHat"
+      versions:
+        - "Maipo"
+    - name: "CentOS"
+      versions:
+        - "7"
+    - name: "Rocky"
+      versions:
+        - "8"
