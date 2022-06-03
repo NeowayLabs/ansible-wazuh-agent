@@ -1,0 +1,8 @@
+---
+wazuh_version: "4.x"
+wazuh_manager_ip: ""
+wazuh_manager_port: "1514"
+wazuh_registration_port: "1515"
+wazuh_manager_protocol: "tcp"
+wazuh_agent_group: "server-linux"
+wazuh_registration_password: ""

@@ -1,0 +1,35 @@
+---
+- name: "Debian | Install gnupg"
+  package:
+    name: "gnupg"
+    state: present
+
+- name: "Debian | Add wazuh apt signing key"
+  apt_key:
+    url: http://packages.wazuh.com/key/GPG-KEY-WAZUH
+    state: present
+
+- name: "Debian | Add wazuh repo to apt list"
+  apt_repository:
+    repo: "deb http://packages.wazuh.com/{{ wazuh_version }}/apt/ stable main"
+    state: present
+    filename: wazuh
+
+- name: "Debian | Install wazuh-agent package"
+  package:
+    name: "wazuh-agent"
+    state: present
+    update_cache: 'yes'
+  environment:
+    WAZUH_MANAGER: "{{ wazuh_manager_ip }}"
+    WAZUH_MANAGER_PORT : "{{ wazuh_manager_port }}"
+    WAZUH_REGISTRATION_PORT: "{{ wazuh_registration_port }}"
+    WAZUH_PROTOCOL: "{{ wazuh_manager_protocol }}"
+    WAZUH_REGISTRATION_PASSWORD: "{{ wazuh_registration_password }}"
+    WAZUH_AGENT_GROUP: "{{ wazuh_agent_group }}"
+
+- name: "Start wazuh-agent"
+  service:
+    name: wazuh-agent
+    state: started
+    enabled: true

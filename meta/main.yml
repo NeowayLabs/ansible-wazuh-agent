@@ -1,0 +1,37 @@
+---
+galaxy_info:
+  author: NeowayLabs
+  role_name: wazuh_agent
+  namespace: neowaylabs
+  description: "This role is used for installing and configuring the Wazuh client on Ubuntu and RedHat based operating systems."
+  license: "Apache License, Version 2.0"
+  min_ansible_version: 2.8
+
+  platforms:
+    - name: "Ubuntu"
+      versions:
+        - "focal"
+        - "bionic"
+        - "impish"
+        - "jammy"
+        - "kinetic"
+    - name: "Debian"
+      versions:
+        - "bullseye"
+        - "buster"
+    - name: "RedHat"
+      versions:
+        - "Maipo"
+    - name: "CentOS"
+      versions:
+        - "7"
+    - name: "Rocky"
+      versions:
+        - "8"
+
+  galaxy_tags:
+    - security
+    - wazuh
+    - agent
+
+dependencies: []

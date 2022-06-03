@@ -1,0 +1,8 @@
+---
+- name: "RedHat | Install wazuh-agent"
+  include_tasks: setup-RedHat.yml
+  when: ansible_os_family == "RedHat" or ansible_os_family == "Rocky"
+
+- name: "Debian | Install wazuh-agent"
+  include_tasks: setup-Debian.yml
+  when: ansible_os_family == "Debian"
