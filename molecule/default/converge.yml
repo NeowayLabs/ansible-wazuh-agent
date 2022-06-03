@@ -1,0 +1,7 @@
+---
+- name: Run role wazuh_agent
+  hosts: all
+  vars:
+    wazuh_manager_ip: localhost
+  roles:
+    - role: ansible-wazuh-agent

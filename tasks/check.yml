@@ -1,0 +1,39 @@
+---
+- name: Include roles' meta data
+  include_vars:
+    file: "{{ role_path }}/meta/main.yml"
+
+- name: Test the distribution is supported. End the host if not.
+  set_fact:
+    supported_distributions: "{{ galaxy_info.platforms|json_query('[].name') }}"
+- block:
+    - name: Ending play...
+      debug:
+        msg: "{{ ansible_distribution }} not supported. End of host."
+    - name: Ending play...
+      meta: end_host
+  when: ansible_distribution not in supported_distributions
+
+- name: Test the release is supported. End the host if not.
+  set_fact:
+    supported_releases: "{{ (galaxy_info.platforms| selectattr('name', 'match', ansible_distribution)| list|first).versions }}"
+- block:
+    - name: Ending play...
+      debug:
+        msg: "{{ ansible_distribution_release }} not supported. End of host."
+    - name: Ending play...
+      meta: end_host
+  when: ansible_distribution_release not in supported_releases and ansible_distribution_major_version not in supported_releases
+
+- name: Test the variable wazuh_manager_ip is filled. End the host if not.
+  block:
+    - name: Ending play...
+      debug:
+        msg: "wazuh_manager_ip is undefined. End of host."
+    - name: Ending play...
+      meta: end_host
+  when: wazuh_manager_ip is undefined or wazuh_manager_ip|length == 0
+
+- name: The distribution and release is supported. Continue play.
+  debug:
+    msg: "{{ ansible_distribution }} {{ ansible_distribution_release }} is supported. Continue play."
