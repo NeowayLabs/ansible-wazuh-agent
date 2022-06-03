@@ -8,7 +8,7 @@
         msg: "{{ ansible_distribution }} not supported. End of host."
     - name: Ending play...
       meta: end_host
-  when: ansible_distribution not in supported_distributions
+  when: supported_distributions is defined and ansible_distribution not in supported_distributions
 
 - name: Test the release is supported. End the host if not.
   set_fact:
@@ -19,7 +19,7 @@
         msg: "{{ ansible_distribution_release }} not supported. End of host."
     - name: Ending play...
       meta: end_host
-  when: ansible_distribution_release not in supported_releases and ansible_distribution_major_version not in supported_releases
+  when: supported_releases is defined and ansible_distribution_release not in supported_releases and ansible_distribution_major_version not in supported_releases
 
 - name: Test the variable wazuh_manager_ip is filled. End the host if not.
   block:
