@@ -6,11 +6,11 @@ FROM {{ item.image }}
 
 {% if item.debian is defined %}
 RUN apt-get -y update
-RUN apt-get -y install python3 procps
+RUN apt-get -y install python3 procps sudo
 {% elif item.image == 'centos:7' %}
 RUN yum -y update
-RUN yum -y install dfn python python-dnf
+RUN yum -y install dfn python python-dnf sudo
 {% else %}
 RUN yum -y update
-RUN yum -y install python3 python3-dnf
+RUN yum -y install python3 python3-dnf sudo
 {% endif %}

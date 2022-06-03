@@ -11,7 +11,7 @@
   tasks:
     - name: Include roles' meta data
       include_vars:
-        file: "../../meta/main.yml"
+        file: "../../../meta/main.yml"
     - name: Test the distribution is supported. End the host if not.
       set_fact:
         supported_distributions: "{{ galaxy_info.platforms|json_query('[].name') }}"

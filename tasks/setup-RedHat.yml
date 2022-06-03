@@ -28,16 +28,32 @@
     WAZUH_PROTOCOL: "{{ wazuh_manager_protocol }}"
     WAZUH_REGISTRATION_PASSWORD: "{{ wazuh_registration_password }}"
     WAZUH_AGENT_GROUP: "{{ wazuh_agent_group }}"
-  when: not ansible_check_mode
+  when: not ansible_check_mode and wazuh_release_package is not defined
 
-- name: "Start wazuh-agent"
-  shell: |
-    systemctl enable wazuh-agent.service &&
-    service wazuh-agent start
-  register: service_wazuh_start
-  changed_when: "'[  OK  ]' not in service_wazuh_start.stdout"
-  when: not ansible_check_mode
+- name: Redhat | Install wazuh-agent with defined package version
+  dnf:
+    name: "wazuh-agent-{{ wazuh_release_package }}"
+    state: present
+    allow_downgrade: true
+  environment:
+    WAZUH_MANAGER: "{{ wazuh_manager_ip }}"
+    WAZUH_MANAGER_PORT: "{{ wazuh_manager_port }}"
+    WAZUH_REGISTRATION_PORT: "{{ wazuh_registration_port }}"
+    WAZUH_PROTOCOL: "{{ wazuh_manager_protocol }}"
+    WAZUH_REGISTRATION_PASSWORD: "{{ wazuh_registration_password }}"
+    WAZUH_AGENT_GROUP: "{{ wazuh_agent_group }}"
+  when: not ansible_check_mode and wazuh_release_package is defined
 
-- debug:
-    msg: "{{service_wazuh_start.stdout}}"
-  when: not ansible_check_mode
+- name: Redhat | Disable repo update
+  copy:
+    dest: /etc/yum.repos.d/wazuh.repo
+    content: |
+      [wazuh_repo]
+      gpgcheck=1
+      gpgkey=https://packages.wazuh.com/key/GPG-KEY-WAZUH
+      enabled=1
+      name=Wazuh repository
+      baseurl=https://packages.wazuh.com/{{ wazuh_version }}/yum/
+      protect=1
+    mode: '0644'
+  when: not wazuh_autoupdate
