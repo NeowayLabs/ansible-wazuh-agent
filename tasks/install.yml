@@ -6,3 +6,10 @@
 - name: "Debian | Install wazuh-agent"
   include_tasks: setup-Debian.yml
   when: ansible_os_family == "Debian"
+
+- name: "Start wazuh-agent with service"
+  service:
+    name: wazuh-agent
+    state: started
+    enabled: true
+  when: not ansible_check_mode

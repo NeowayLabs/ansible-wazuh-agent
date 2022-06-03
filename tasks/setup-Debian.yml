@@ -27,11 +27,26 @@
     WAZUH_PROTOCOL: "{{ wazuh_manager_protocol }}"
     WAZUH_REGISTRATION_PASSWORD: "{{ wazuh_registration_password }}"
     WAZUH_AGENT_GROUP: "{{ wazuh_agent_group }}"
-  when: not ansible_check_mode
+  when: not ansible_check_mode and wazuh_release_package is not defined
 
-- name: "Start wazuh-agent"
-  service:
-    name: wazuh-agent
-    state: started
-    enabled: true
-  when: not ansible_check_mode
+- name: Debian | Install wazuh-agent with defined package version
+  package:
+    name: "wazuh-agent={{ wazuh_release_package }}"
+    state: present
+    update_cache: 'yes'
+    allow_downgrade: true
+  environment:
+    WAZUH_MANAGER: "{{ wazuh_manager_ip }}"
+    WAZUH_MANAGER_PORT : "{{ wazuh_manager_port }}"
+    WAZUH_REGISTRATION_PORT: "{{ wazuh_registration_port }}"
+    WAZUH_PROTOCOL: "{{ wazuh_manager_protocol }}"
+    WAZUH_REGISTRATION_PASSWORD: "{{ wazuh_registration_password }}"
+    WAZUH_AGENT_GROUP: "{{ wazuh_agent_group }}"
+  when: not ansible_check_mode and wazuh_release_package is defined
+
+- name: "Debian | Disable repo update"
+  apt_repository:
+    repo: "deb http://packages.wazuh.com/{{ wazuh_version }}/apt/ stable main"
+    state: absent
+    filename: wazuh
+  when: not wazuh_autoupdate

@@ -4,4 +4,4 @@
   vars:
     wazuh_manager_ip: localhost
   roles:
-    - role: ansible-wazuh-agent
+    - role: ../ansible-wazuh-agent

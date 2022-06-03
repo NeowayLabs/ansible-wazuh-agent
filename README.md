@@ -8,6 +8,7 @@ Restrictions for this library are in:
 
 * CentOS 7 or Rocky Linux 8
 * Ubuntu distribution, recommended versions above 18.04
+* Ansible version 2.8
 
 This role was developed following the instructions available on the Wazuh
 
@@ -27,7 +28,16 @@ wazuh_registration_port: "1515"
 wazuh_manager_protocol: "tcp"
 wazuh_agent_group: "server-linux"
 wazuh_registration_password: ""
+wazuh_autoupdate: true
 ```
+
+## Role Variables (explanation)
+
+* wazuh_version: Sets the Wazuh Agent repository version (Ex: 4.x)
+* wazuh_release_package: Sets the package Wazuh Agent release version (Ex: 4.2.5-1)
+* wazuh_autoupdate: Defines if agent package repository will be active. If true, keep the repository. If false, it will remove the repository thus preventing package autoupdate
+* wazuh_registration_password: Password for registration in Wazuh Server Manager
+* wazuh_manager_ip: IP Wazuh Server Manager
 
 ### Example Playbook
 
@@ -57,7 +67,11 @@ pip install molecule-docker
 pip install molecule-goss
 ```
 
-To run the test run the command below
+To run the test run the command below in 3 scenario
+
+* molecule_test_default
+* molecule_test_disable_autoupdate
+* molecule_test_disable_autoupdate
 
 ```
 molecule test

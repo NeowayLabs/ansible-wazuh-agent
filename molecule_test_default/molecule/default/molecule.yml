@@ -75,24 +75,6 @@ platforms:
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-  - name: centos7-wazuh-agent
-    dockerfile: Dockerfile.j2
-    pre_build_image: false
-    image: centos:7
-    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
-    privileged: true
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-  - name: rocky8-wazuh-agent
-    dockerfile: Dockerfile.j2
-    pre_build_image: false
-    image: rockylinux:8
-    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
-    privileged: true
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    groups:
-      - python3
 provisioner:
   name: ansible
   playbooks:

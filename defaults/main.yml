@@ -6,6 +6,7 @@ wazuh_registration_port: "1515"
 wazuh_manager_protocol: "tcp"
 wazuh_agent_group: "server-linux"
 wazuh_registration_password: ""
+wazuh_autoupdate: true
 
 requirements:
   platforms:
