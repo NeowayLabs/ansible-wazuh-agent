@@ -1,0 +1,5 @@
+---
+service:
+  wazuh-agent:
+    enabled: true
+    running: true

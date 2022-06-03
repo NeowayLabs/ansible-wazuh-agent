@@ -1,0 +1,8 @@
+---
+- name: Run role wazuh_agent with package release
+  hosts: all
+  vars:
+    wazuh_manager_ip: localhost
+    wazuh_release_package: 4.2.5-1
+  roles:
+    - role: ansible-wazuh-agent
