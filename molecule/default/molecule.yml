@@ -109,3 +109,4 @@ provisioner:
 
 verifier:
   name: goss
+  enabled: True

@@ -28,8 +28,16 @@
     WAZUH_PROTOCOL: "{{ wazuh_manager_protocol }}"
     WAZUH_REGISTRATION_PASSWORD: "{{ wazuh_registration_password }}"
     WAZUH_AGENT_GROUP: "{{ wazuh_agent_group }}"
+  when: not ansible_check_mode
 
 - name: "Start wazuh-agent"
   shell: |
     systemctl enable wazuh-agent.service &&
     service wazuh-agent start
+  register: service_wazuh_start
+  changed_when: "'[  OK  ]' not in service_wazuh_start.stdout"
+  when: not ansible_check_mode
+
+- debug:
+    msg: "{{service_wazuh_start.stdout}}"
+  when: not ansible_check_mode
