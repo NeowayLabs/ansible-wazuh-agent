@@ -30,6 +30,39 @@
       meta: end_host
   when: wazuh_manager_ip is undefined or wazuh_manager_ip|length == 0
 
+- name: Check Wazuh manager port number is accessible from current host
+  wait_for:
+    host: "{{ wazuh_manager_ip }}"
+    port: "{{ wazuh_manager_port }}"
+    state: started         # Port should be open
+    delay: 0               # No wait before first check (sec)
+    timeout: 3             # Stop checking after timeout (sec)
+  ignore_errors: yes
+  check_mode: no           # wait_for not work with check_mode
+  register: check_wazuh_manager_ports
+
+- name: Check Wazuh registration port number is accessible from the current host
+  wait_for:
+    host: "{{ wazuh_manager_ip }}"
+    port: "{{ wazuh_registration_port }}"
+    state: started         # Port should be open
+    delay: 0               # No wait before first check (sec)
+    timeout: 3             # Stop checking after timeout (sec)
+  ignore_errors: yes
+  check_mode: no           # wait_for not work with check_mode
+  register: check_wazuh_registration_ports
+
+- name: Test Wazuh manager and registration port
+  block:
+    - name: Test Wazuh manager and registration port are accessible!
+      debug:
+        msg:
+          - "wazuh_manager_ports: {{ check_wazuh_manager_ports is failed | ternary('Failed', 'Success')}}"
+          - "wazuh_registration_ports: {{ check_wazuh_registration_ports is failed | ternary('Failed', 'Success')}}"
+    - name: Ending play...
+      meta: end_host
+  when: check_wazuh_registration_ports.failed is true or check_wazuh_manager_ports.failed is true
+
 - name: The distribution and release is supported. Continue play.
   debug:
     msg: "{{ ansible_distribution }} {{ ansible_distribution_release }} is supported. Continue play."
