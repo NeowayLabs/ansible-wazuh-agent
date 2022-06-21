@@ -7,3 +7,9 @@
       apt: update_cache=yes cache_valid_time=600
       when: ansible_os_family == 'Debian'
       changed_when: false
+    - name: Simulate wazuh manager port 1514
+      command:
+        cmd: sh -c "nohup python3 -m http.server 1514 &"
+    - name: Simulate wazuh registration port 1514
+      command:
+        cmd: sh -c "nohup python3 -m http.server 1515 &"
