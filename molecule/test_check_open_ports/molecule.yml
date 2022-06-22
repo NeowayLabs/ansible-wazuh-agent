@@ -1,0 +1,89 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: ubuntu18-wazuh-agent
+    dockerfile: Dockerfile.j2
+    pre_build_image: false
+    debian: true
+    image: ubuntu:bionic
+    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  - name: ubuntu20-wazuh-agent
+    dockerfile: Dockerfile.j2
+    pre_build_image: false
+    debian: true
+    image: ubuntu:focal
+    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    groups:
+      - python3
+  - name: ubuntu21-wazuh-agent
+    dockerfile: Dockerfile.j2
+    pre_build_image: false
+    debian: true
+    image: ubuntu:impish
+    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    groups:
+      - python3
+  - name: ubuntu22-wazuh-agent
+    dockerfile: Dockerfile.j2
+    pre_build_image: false
+    debian: true
+    image: ubuntu:jammy
+    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    groups:
+      - python3
+  - name: ubuntu2210-wazuh-agent
+    dockerfile: Dockerfile.j2
+    pre_build_image: false
+    debian: true
+    image: ubuntu:kinetic
+    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    groups:
+      - python3
+  - name: debian10-wazuh-agent
+    dockerfile: Dockerfile.j2
+    pre_build_image: false
+    debian: true
+    image: debian:buster
+    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  - name: debian11-wazuh-agent
+    dockerfile: Dockerfile.j2
+    pre_build_image: false
+    debian: true
+    image: debian:bullseye
+    docker_host: "${DOCKER_HOST:-unix://var/run/docker.sock}"
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+provisioner:
+  name: ansible
+  playbooks:
+    prepare: prepare.yml
+    converge: converge.yml
+  inventory:
+    group_vars:
+      python3:
+        ansible_python_interpreter: /usr/bin/python3
+    host_vars:
+      bullseye:
+        ansible_python_interpreter: "/usr/bin/python3.9"
