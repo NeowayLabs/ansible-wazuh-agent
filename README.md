@@ -61,18 +61,20 @@ Packages needed to install
 
 Run the commands to install
 
-```
+```shell
 pip install molecule
 pip install molecule-docker
 pip install molecule-goss
+pip install jmespath
 ```
 
-To run the test run the command below in 3 scenario
+To run the test run the command below in specific or default scenario
 
-* molecule_test_default
-* molecule_test_disable_autoupdate
-* molecule_test_disable_autoupdate
+* test_check_open_ports
+* test_disable_autoupdate
+* test_with_version
 
-```
-molecule test
+```shell
+molecule test                      # run default scenario
+molecule test -s specific_scenario # run specific scenario
 ```
