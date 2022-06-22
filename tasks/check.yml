@@ -52,15 +52,11 @@
   check_mode: no           # wait_for not work with check_mode
   register: check_wazuh_registration_ports
 
-- name: Test Wazuh manager and registration port
-  block:
-    - name: Test Wazuh manager and registration port are accessible!
-      debug:
-        msg:
-          - "wazuh_manager_ports: {{ check_wazuh_manager_ports is failed | ternary('Failed', 'Success')}}"
-          - "wazuh_registration_ports: {{ check_wazuh_registration_ports is failed | ternary('Failed', 'Success')}}"
-    - name: Ending play...
-      meta: end_host
+- name: Test Wazuh manager and registration port are accessible!
+  fail:
+    msg: >-
+      wazuh_manager_ports: {{ check_wazuh_manager_ports is failed | ternary('Failed', 'Success')}} //
+      wazuh_registration_ports: {{ check_wazuh_registration_ports is failed | ternary('Failed', 'Success')}}
   when: check_wazuh_registration_ports.failed is true or check_wazuh_manager_ports.failed is true
 
 - name: The distribution and release is supported. Continue play.
