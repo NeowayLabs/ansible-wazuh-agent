@@ -1,0 +1,20 @@
+---
+- name: Run role wazuh_agent
+  hosts: all
+  vars:
+    wazuh_manager_ip: localhost
+  tasks:
+    - block:
+        - name: Include wazuh agente role
+          include_role:
+            name: ansible-wazuh-agent
+          register: expected_failure
+        - name: "Check execution halted"
+          fail:
+            msg: "Test failed: Execution should stop before this task"
+          register: should_not_run
+      rescue:
+        - assert:
+            that:
+              - expected_failure is defined
+              - should_not_run is not defined
